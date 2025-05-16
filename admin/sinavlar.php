@@ -58,7 +58,8 @@ if (isset($_GET['deleteID'])) {
                         <tr>
                             <th>Sınav Adı</th>
                             <th>Soru</th>
-                            <th>tarih</th>
+                            <th>Tarih</th>
+                            <th>Son Tarih</th>
                             <th>Düzenle</th>
                             <th>Sil</th>
                         </tr>
@@ -75,6 +76,7 @@ if (isset($_GET['deleteID'])) {
                                     <td><?php echo $sinavlarList['baslik'] ?></td>
                                     <td><?php echo $sinavlarList['soru_sayisi'] ?></td>
                                     <td><?php echo $sinavlarList['tarih'] ?></td>
+                                    <td><?php echo $sinavlarList['sinav_sonu_tarihi'] ?></td>
                                     <td> <a href="sinavlar.php?updateID=<?php echo $sinavlarList['id']; ?>" class="btn btn-warning">Düzenle</a> </td>
                                     <td> <a href="sinavlar.php?deleteID=<?php echo $sinavlarList['id']; ?>" class="btn btn-danger">Sil</a> </td>
                                 </tr>
@@ -108,11 +110,11 @@ if (isset($_GET['deleteID'])) {
                     <input type="hidden" name="sinav_id" value="<?php echo $sinav_sec_satir['id']; ?>">
                     <div class="col-6 my-2">
                         <select name="soru_sayisi_up" class="form-control">
-                            <option value="<?php echo $sinav_sec_satir['soru_sayisi']; ?>"><?php echo $sinav_sec_satir['soru_sayisi']; ?></option>
-                            <option value="5">5 Soru</option>
-                            <option value="10">10 Soru</option>
-                            <option value="15">15 Soru</option>
-                            <option value="20">20 Soru</option>
+                            <?php for ($i = 1; $i <= 10; $i++) {
+                            ?>
+                                <option value="<?php echo $i ?>"><?php echo $i ?> Soru</option>
+                            <?php }
+                            ?>
                         </select>
                     </div>
                     <div class="col-6 my-2">
@@ -130,8 +132,11 @@ if (isset($_GET['deleteID'])) {
                             <option value="4">4. Sınıf</option>
                         </select>
                     </div>
-                    <div class="col-6 my-2">
+                    <div class="col-3 my-2">
                         <input type="date" name="tarih_up" value="<?php echo $sinav_sec_satir['tarih']; ?>" class="form-control">
+                    </div>
+                    <div class="col-3 my-2">
+                        <input type="date" name="sinav_sonu_tarihi_up" value="<?php echo $sinav_sec_satir['sinav_sonu_tarihi']; ?>" class="form-control">
                     </div>
 
                     <div id="sorular">
@@ -178,43 +183,44 @@ if (isset($_GET['deleteID'])) {
                     <?php
                     if (isset($_POST['soru_olustur_up'])) {
                         $mevcut_soru_sayisi = count($sorular); // Mevcut soru sayısı
-                        $yeni_soru_sayisi = $_POST['soru_sayisi_up'] - $mevcut_soru_sayisi; // Eklenmesi gereken soru sayısı
-
-                        for ($i = 0; $i < $yeni_soru_sayisi; $i++) {
+                        $yeni_soru_sayisi = $_POST['soru_sayisi_up']; // Eklenmesi gereken soru sayısı
+                        if ($yeni_soru_sayisi > 0) {
+                            for ($i = 0; $i < $yeni_soru_sayisi; $i++) {
                     ?>
-                            <div class="col-12 my-2">
-                                <textarea name="yeni_soru[]" rows="4" class="w-100" placeholder="Yeni Soru"></textarea>
-                            </div>
-                            <div class="col-12 mb-2">
-                                <div class="row justify-content-between">
-                                    <div class="col-md-2">
-                                        <input type="text" name="yeni_a[]" placeholder="A Şıkkı" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" name="yeni_b[]" placeholder="B Şıkkı" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" name="yeni_c[]" placeholder="C Şıkkı" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" name="yeni_d[]" placeholder="D Şıkkı" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" name="yeni_e[]" placeholder="E Şıkkı" class="form-control" required>
+                                <div class="col-12 my-2">
+                                    <textarea name="yeni_soru[]" rows="4" class="w-100" placeholder="Yeni Soru"></textarea>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row justify-content-between">
+                                        <div class="col-md-2">
+                                            <input type="text" name="yeni_a[]" placeholder="A Şıkkı" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" name="yeni_b[]" placeholder="B Şıkkı" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" name="yeni_c[]" placeholder="C Şıkkı" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" name="yeni_d[]" placeholder="D Şıkkı" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" name="yeni_e[]" placeholder="E Şıkkı" class="form-control" required>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <input type="text" name="yeni_dogru[]" placeholder="Doğru Cevap" class="form-control">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="number" name="yeni_puan[]" placeholder="Puan" class="form-control">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input type="text" name="yeni_dogru[]" placeholder="Doğru Cevap" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" name="yeni_puan[]" placeholder="Puan" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                     <?php
+                            }
                         }
                     }
                     ?>
@@ -245,8 +251,8 @@ if (isset($_POST['guncelle'])) {
         $guncelle->execute(array($soru, $a, $b, $c, $d, $e, $dogru, $puan, $soru_id));
 
         $soru_sayisi = count($_POST['soruup']) + (isset($_POST['yeni_soru']) ? count($_POST['yeni_soru']) : 0);
-        $ekle_sinav = $db->prepare('update sinavlar set sinif_id=?, baslik=?, tarih=?, soru_sayisi=? where id = ?');
-        $ekle_sinav->execute(array($_POST['sinif_id_up'], $_POST['baslik_up'], $_POST['tarih_up'], $soru_sayisi, $_POST['sinav_id']));
+        $ekle_sinav = $db->prepare('update sinavlar set sinif_id=?, baslik=?, tarih=?, sinav_sonu_tarihi=?, soru_sayisi=? where id = ?');
+        $ekle_sinav->execute(array($_POST['sinif_id_up'], $_POST['baslik_up'], $_POST['tarih_up'], $_POST['sinav_sonu_tarihi_up'], $soru_sayisi, $_POST['sinav_id']));
     }
 
     if (isset($_POST['yeni_soru'])) {
@@ -260,7 +266,7 @@ if (isset($_POST['guncelle'])) {
             $puan = $_POST['yeni_puan'][$index];
 
             $ekle_soru = $db->prepare('insert into sorular (sinav_id, soru, a, b, c, d, e, dogru, puan) values (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-            $ekle_soru->execute([$_POST['sinav_id'], $yeni_soru, $a, $b, $c, $d, $e, $dogru, $puan]);
+            $ekle_soru->execute(array($_POST['sinav_id'], $yeni_soru, $a, $b, $c, $d, $e, $dogru, $puan));
         }
     }
     echo '<script> alert("Sınav Güncellemesi Başarılı") </script><meta http-equiv="refresh" content="0; url=sinavlar.php">';

@@ -34,8 +34,11 @@
                 <option value="4">4. Sınıf</option>
             </select>
         </div>
-        <div class="col-6 my-2">
+        <div class="col-3 my-2">
             <input type="date" name="tarih" class="form-control">
+        </div>
+        <div class="col-3 my-2">
+            <input type="date" name="sinav_sonu_tarihi" class="form-control">
         </div>
         <?php
         if (isset($_POST['soru_olustur'])) {
@@ -91,8 +94,8 @@
 
 <?php
 if (isset($_POST['sinav_olustur'])) {
-    $stmt = $db->prepare("INSERT INTO sinavlar (sinif_id, baslik, tarih, soru_sayisi) VALUES (?, ?, ?,?)");
-    $stmt->execute([$_POST['sinif_id'], $_POST['baslik'], $_POST['tarih'], $_POST['soru_sayisi']]);
+    $stmt = $db->prepare("INSERT INTO sinavlar (sinif_id, baslik, tarih, sinav_sonu_tarihi, soru_sayisi) VALUES (?, ?, ?,?)");
+    $stmt->execute([$_POST['sinif_id'], $_POST['baslik'], $_POST['tarih'], $_POST['sinav_sonu_tarihi'], $_POST['soru_sayisi']]);
 
     $sinav_id = $db->lastInsertId();
     $_SESSION['sinav_id'] = $sinav_id;
