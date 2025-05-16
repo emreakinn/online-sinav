@@ -1,5 +1,7 @@
 <?php
 require_once('./assets/baglan.php');
+session_start();
+
 ?>
 
 <!DOCTYPE html>
@@ -36,8 +38,7 @@ require_once('./assets/baglan.php');
                                     <a class="nav-link" aria-current="page" href="index.php">Ana Sayfa</a>
                                     <a class="nav-link" href="blog.php">Dersler</a>
                                     <a class="nav-link" href="iletisim.php">İletişim</a>
-                                    <a class="nav-link" href="portfolyo.php">Öğrenci Kayıt</a>
-                                    <a class="nav-link" href="hizmetler.php">Giriş Yap</a>
+                                    <a class="nav-link" name="giris" href="index.php?giris_yap">Giriş</a>
                                 </div>
                             </div>
                         </div>
@@ -116,9 +117,37 @@ require_once('./assets/baglan.php');
         }
     }
 
-    if(isset($_POST['giris'])) {
-        $kontrol = $db -> prepare('select count(*) from ogrenciler where email=?');
-        $kontrol -> execute(array($_POST['eposta']))
+    if (isset($_POST['giris'])) {
+        $kontrol = $db->prepare('select count(*) from ogrenciler where email=? and sifre =?');
+        $kontrol->execute(array($_POST['eposta_giris'], $_POST['sifre_giris']));
+        $giris_kontrol = $kontrol->fetchColumn();
+
+        if ($giris_kontrol > 0) {
+            $kullanici = $db->prepare('SELECT ad_soyad FROM ogrenciler WHERE email=?');
+            $kullanici->execute([$_POST['eposta_giris']]);
+            $adsoyad = $kullanici->fetchColumn();
+            $_SESSION['ad_soyad'] = $adsoyad;
+            echo '<script> alert("Giriş Başarılı") </script><meta http-equiv="refresh" content="0; url=ogrDashboard.php">';
+        } else {
+            echo '<script> alert("Giriş Başarısız") </script>
+           <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
+                    myModal.show();
+                });
+            </script>
+           ';
+        }
+    }
+    if (isset($_GET["giris_yap"])) {
+        echo '
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
+            myModal.show();
+        });
+    </script>
+    ';
     }
 
     ?>
