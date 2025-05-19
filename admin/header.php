@@ -40,6 +40,7 @@ if (!isset($_SESSION['kadi'])) {
                     <a href="dashboard.php" class="d-block text-white mb-2">Başlangıç</a>
                     <a href="sinav_ekle.php" class="d-block text-white mb-2">Sınav Ekle</a>
                     <a href="sinavlar.php" class="d-block text-white mb-2">Sınavlar</a>
+                    <a href="haberler.php" class="d-block text-white mb-2">Haberler</a>
 
                     <a href="logout.php" class="d-block text-warning mt-2">Güvenli Çıkış</a>
                 </div>

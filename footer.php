@@ -1,6 +1,6 @@
     <!-- Footer Section Start -->
     <footer id="footer">
-        Footer
+
     </footer>
     <!-- Footer Section End -->
 

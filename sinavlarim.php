@@ -54,7 +54,15 @@ if (isset($_GET['sinav'])) {
     ';
 }
 ?>
-
+<section id="sinavlar" class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-1">Sınavlar</h1>
+            </div>
+        </div>
+    </div>
+</section>
 <section id="sinavlarim">
     <div class="container">
         <div class="row">
@@ -62,11 +70,16 @@ if (isset($_GET['sinav'])) {
             // Öğrencinin sınıfına ait sınavları çek
             $sinavlar = $db->prepare('SELECT * FROM sinavlar WHERE sinif_id = ?');
             $sinavlar->execute([$ogrenci_sinif_id]);
+
             foreach ($sinavlar as $sinavlarSatir) {
                 // Bu sınavı öğrenci tamamlamış mı?
                 $kontrol = $db->prepare('SELECT COUNT(*) FROM cevaplar WHERE ogrenci_id = ? AND soru_id IN (SELECT id FROM sorular WHERE sinav_id = ?)');
                 $kontrol->execute([$ogr_id, $sinavlarSatir['id']]);
                 $cevap_var = $kontrol->fetchColumn() > 0;
+
+                // Tarih kontrolü
+                $bugun = date('Y-m-d');
+                $sinav_bitis = $sinavlarSatir['sinav_sonu_tarihi'];
             ?>
                 <div class="col-md-6">
                     <div class="card shadow mb-4">
@@ -83,6 +96,8 @@ if (isset($_GET['sinav'])) {
                                 $toplam_puan = $puan_sorgu->fetchColumn();
                                 echo '<span class="text-dark">Aldığınız Puan: <b>' . intval($toplam_puan) . '</b></span><br>';
                                 echo '<span class="text-success">Sınav Tamamlandı</span>';
+                            } elseif ($bugun > $sinav_bitis) {
+                                echo '<span class="text-danger">Sınav Tarihi Geçti</span>';
                             } else {
                                 echo '<a class="text-success fs-3" href="sinavlarim.php?sinav=' . $sinavlarSatir['id'] . '" onclick="return confirm(\'Sınava başlamak istiyor musunuz?\');"><b>Sınava Başla</b></a>';
                             }

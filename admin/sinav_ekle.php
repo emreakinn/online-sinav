@@ -94,7 +94,7 @@
 
 <?php
 if (isset($_POST['sinav_olustur'])) {
-    $stmt = $db->prepare("INSERT INTO sinavlar (sinif_id, baslik, tarih, sinav_sonu_tarihi, soru_sayisi) VALUES (?, ?, ?,?)");
+    $stmt = $db->prepare("INSERT INTO sinavlar (sinif_id, baslik, tarih, sinav_sonu_tarihi, soru_sayisi) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([$_POST['sinif_id'], $_POST['baslik'], $_POST['tarih'], $_POST['sinav_sonu_tarihi'], $_POST['soru_sayisi']]);
 
     $sinav_id = $db->lastInsertId();
