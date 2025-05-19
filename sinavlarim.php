@@ -54,7 +54,7 @@ if (isset($_GET['sinav'])) {
     ';
 }
 ?>
-<section id="sinavlar" class="banner">
+<section id="sinavlar" class="mb-5">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">

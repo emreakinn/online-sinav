@@ -38,8 +38,11 @@ if (isset($_GET['deleteID'])) {
 ?>
 <!-- Admin Body Section Start -->
 <div class="row">
-    <div class="col-12 text-center">
+    <div class="col-md-6">
         <h3>Sınavlar</h3>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="sinav_ekle.php" class="btn btn-info text-white">Yeni Sınav Ekle</a>
     </div>
 </div>
 <div class="row">

@@ -5,8 +5,11 @@
 ?>
 <!-- Admin Body Section Start -->
 <div class="row">
-    <div class="col-12 text-center">
-        <h3>Sınav Soruları</h3>
+    <div class="col-6">
+        <h3>Yeni Sınav Ekle</h3>
+    </div>
+    <div class="col-6 text-end">
+        <a href="sinavlar.php" class="btn btn-info text-white">Tümünü Gör</a>
     </div>
 </div>
 <div class="row justify-content-center">
