@@ -77,8 +77,23 @@ if (isset($_GET['deleteID'])) {
                                     <td><?php echo $sinavlarList['soru_sayisi'] ?></td>
                                     <td><?php echo $sinavlarList['tarih'] ?></td>
                                     <td><?php echo $sinavlarList['sinav_sonu_tarihi'] ?></td>
-                                    <td> <a href="sinavlar.php?updateID=<?php echo $sinavlarList['id']; ?>" class="btn btn-warning">Düzenle</a> </td>
-                                    <td> <a href="sinavlar.php?deleteID=<?php echo $sinavlarList['id']; ?>" class="btn btn-danger">Sil</a> </td>
+                                    <?php
+                                    $cevap_var = $db->prepare('select COUNT(*) from cevaplar where soru_id in (select id from sorular where sinav_id=?)');
+                                    $cevap_var->execute(array($sinavlarList['id']));
+                                    $degistirilemez = $cevap_var->fetchColumn() > 0;
+
+                                    if ($degistirilemez) {
+                                    ?>
+                                        <td colspan="2" class="text-danger">Değiştirilemez</td>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <td> <a href="sinavlar.php?updateID=<?php echo $sinavlarList['id']; ?>" class="btn btn-warning">Düzenle</a> </td>
+                                        <td> <a href="sinavlar.php?deleteID=<?php echo $sinavlarList['id']; ?>" class="btn btn-danger">Sil</a> </td>
+                                    <?php
+                                    }
+
+                                    ?>
                                 </tr>
                         <?php
                             }

@@ -110,7 +110,7 @@ if (isset($_POST['sinav_olustur'])) {
         $puan = $_POST['puan'][$i + 1];
 
         $stmt = $db->prepare("INSERT INTO sorular (sinav_id, soru, a, b, c, d, e, dogru, puan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$sinav_id, $soru, $a, $b, $c, $d, $e, $dogru, $puan]);
+        $stmt->execute(array($sinav_id, $soru, $a, $b, $c, $d, $e, $dogru, $puan));
     }
     echo '<script> alert("Sınav Başarıyla Oluşturdu")</script><meta http-equiv="refresh" content="0; url=sinav_ekle.php">';
 }
